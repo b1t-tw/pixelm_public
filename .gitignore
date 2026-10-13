@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # written by scripts/fetch-release.mjs in CI
 public/latest.json
+public/latest-beta.json

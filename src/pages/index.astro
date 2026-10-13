@@ -48,21 +48,28 @@ const features = [
 
 const gallery = [flow1, flow2, flow3, flow4];
 
-/** Written by scripts/fetch-release.mjs from the newest published GitHub Release. */
+/** Written by scripts/fetch-release.mjs from the published GitHub Releases. */
 interface Release {
-	version: string | null;
+	version: string;
+	prerelease: boolean;
 	pubDate: string | null;
-	url: string | null;
+	url: string;
 	downloads: { os: 'windows' | 'macos'; arch: string; name: string; url: string; size: number }[];
 }
-const release = releaseData as Release;
+const { stable, preview } = releaseData as { stable: Release | null; preview: Release | null };
+/** Shown first: the stable release, or the preview while no stable release exists. */
+const primary = stable ?? preview;
+const channels = [
+	primary && { release: primary, heading: null },
+	stable && preview && { release: preview, heading: '搶先體驗測試版' },
+].filter((c) => c !== null);
 
 const osLabel = (os: string, arch: string) =>
 	os === 'windows'
 		? 'Windows（64 位元）'
 		: ({ aarch64: 'macOS（Apple 晶片）', x64: 'macOS（Intel）', universal: 'macOS（Apple 晶片 / Intel）' } as Record<string, string>)[arch];
 const mb = (bytes: number) => `${(bytes / 1024 / 1024).toFixed(1)} MB`;
-const pubDate = release.pubDate && new Date(release.pubDate).toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' });
+const dateOf = (iso: string | null) => iso && new Date(iso).toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' });
 ---
 
 <Layout>
@@ -72,7 +79,7 @@ const pubDate = release.pubDate && new Date(release.pubDate).toLocaleDateString(
 		<div class="absolute inset-0 -z-10 bg-gradient-to-b from-ink/30 via-transparent to-ink"></div>
 		<div class="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/85 to-transparent md:via-35%"></div>
 		<div class="mx-auto w-full max-w-6xl px-5">
-			{release.version && <span class="rounded-full border border-white/20 px-3 py-1 text-xs text-slate-300">v{release.version}</span>}
+			{primary && <span class="rounded-full border border-white/20 px-3 py-1 text-xs text-slate-300">v{primary.version}</span>}
 			<h1 class="mt-6 font-brand text-5xl font-bold tracking-wide text-white md:text-7xl">
 				PixelM Creator <span class="text-glow">X</span>
 			</h1>
@@ -156,27 +163,33 @@ const pubDate = release.pubDate && new Date(release.pubDate).toLocaleDateString(
 		<div class="mx-auto max-w-6xl px-5">
 			<h2 class="text-3xl font-bold text-white md:text-4xl">下載</h2>
 			{
-				release.downloads.length > 0 ? (
-					<>
-						<p class="mt-3 text-slate-400">
-							PixelM Creator X v{release.version}
-							{pubDate && ` · ${pubDate} 發佈`} · 安裝後會自動檢查更新
-						</p>
-						<div class="mt-10 grid gap-4 sm:grid-cols-2">
-							{release.downloads.map((d) => (
-								<a href={d.url} target="_blank" rel="noopener noreferrer" class="border-glow group flex items-center justify-between rounded-xl px-6 py-5">
-									<span>
-										<span class="block font-medium text-white">{osLabel(d.os, d.arch)}</span>
-										<span class="text-sm text-slate-400">
-											{d.name} · {mb(d.size)}
+				channels.length > 0 ? (
+					channels.map(({ release, heading }) => (
+						<div class={heading ? 'mt-14' : ''}>
+							{heading && <h3 class="text-xl font-bold text-white">{heading}</h3>}
+							<p class="mt-3 text-slate-400">
+								PixelM Creator X v{release.version}
+								{release.pubDate && ` · ${dateOf(release.pubDate)} 發佈`} · 安裝後會自動檢查更新
+							</p>
+							{release.prerelease && (
+								<p class="mt-3 inline-block rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-sm text-amber-300">測試版，可能不穩定</p>
+							)}
+							<div class="mt-8 grid gap-4 sm:grid-cols-2">
+								{release.downloads.map((d) => (
+									<a href={d.url} target="_blank" rel="noopener noreferrer" class="border-glow group flex items-center justify-between rounded-xl px-6 py-5">
+										<span>
+											<span class="block font-medium text-white">{osLabel(d.os, d.arch)}</span>
+											<span class="text-sm text-slate-400">
+												{d.name} · {mb(d.size)}
+											</span>
 										</span>
-									</span>
-									<span class="text-2xl text-slate-300 transition group-hover:translate-y-0.5">↓</span>
-								</a>
-							))}
+										<span class="text-2xl text-slate-300 transition group-hover:translate-y-0.5">↓</span>
+									</a>
+								))}
+							</div>
+							<a class="mt-6 inline-block text-sm text-glow-cyan hover:underline" href={release.url} target="_blank" rel="noopener noreferrer">更新內容與所有檔案</a>
 						</div>
-						{release.url && <a class="mt-6 inline-block text-sm text-glow-cyan hover:underline" href={release.url} target="_blank" rel="noopener noreferrer">更新內容與所有檔案</a>}
-					</>
+					))
 				) : (
 					<p class="mt-6 rounded-xl border border-white/10 px-6 py-5 text-slate-300">PixelM Creator X 即將推出，敬請期待。</p>
 				)

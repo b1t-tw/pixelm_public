@@ -1,6 +1,18 @@
 {
-	"version": null,
-	"pubDate": null,
-	"url": null,
-	"downloads": []
+	"stable": null,
+	"preview": {
+		"version": "4.0.0-alpha.2",
+		"prerelease": true,
+		"pubDate": "2026-10-13T12:15:12Z",
+		"url": "https://github.com/b1t-tw/pixelm_public/releases/tag/v4.0.0-alpha.2",
+		"downloads": [
+			{
+				"os": "windows",
+				"arch": "x64",
+				"name": "PixelMCreator.X_4.0.0-alpha.2_x64-setup.exe",
+				"url": "https://github.com/b1t-tw/pixelm_public/releases/download/v4.0.0-alpha.2/PixelMCreator.X_4.0.0-alpha.2_x64-setup.exe",
+				"size": 2668253
+			}
+		]
+	}
 }
