@@ -4,28 +4,91 @@ import '../styles/global.css';
 
 interface Props {
 	title?: string;
+	description?: string;
 }
 
-const { title = 'Railustre' } = Astro.props;
+const {
+	title = 'PixelM Creator X | Pixel MR 光舞道具燈光編輯軟體',
+	description = 'PixelM Creator X 是 Pixel MR 系列 POV 視覺暫留旋轉道具的燈光編輯軟體：圖騰、文字、圖片排進時間軸，搭配音樂預覽，透過 USB 上傳到道具。',
+} = Astro.props;
+
+const nav = [
+	{ href: '/#features', label: '功能' },
+	{ href: '/#gadgets', label: '支援道具' },
+	{ href: '/#download', label: '下載' },
+	{ href: '/manual', label: '使用說明' },
+	{ href: '/#about', label: '關於' },
+];
 ---
 
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="bg-ink">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<meta name="keywords" content="PixelM, Pixel MR, PixelM Creator, LED POI, LED光舞道具, POV, 視覺暫留, 位元創意" />
+		<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={new URL(Astro.url.pathname, Astro.site)} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap"
+		/>
 		<title>{title}</title>
 		<ClientRouter />
 	</head>
-	<body class="min-h-dvh bg-white text-slate-900 antialiased">
-		<nav class="flex gap-4 border-b border-slate-200 px-6 py-4">
-			<a href="/" class="font-semibold hover:underline">首頁</a>
-			<a href="/about" class="hover:underline">關於</a>
-		</nav>
-		<main class="px-6 py-8">
+	<body class="min-h-dvh bg-ink text-slate-200 antialiased">
+		<header class="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-ink/70 backdrop-blur">
+			<nav class="mx-auto flex max-w-6xl items-center gap-6 px-5 py-3">
+				<a href="/" class="font-brand text-xl font-bold tracking-wide text-white">
+					Pixel<span class="text-glow">M</span>
+				</a>
+				<input id="nav-toggle" type="checkbox" class="peer hidden" />
+				<label for="nav-toggle" class="ml-auto cursor-pointer p-2 text-slate-300 md:hidden" aria-label="選單">
+					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M4 7h16M4 12h16M4 17h16" />
+					</svg>
+				</label>
+				<ul
+					class="absolute inset-x-0 top-full hidden flex-col gap-1 border-b border-white/10 bg-ink/95 px-5 py-3 peer-checked:flex md:static md:ml-auto md:flex md:flex-row md:gap-6 md:border-0 md:bg-transparent md:p-0"
+				>
+					{
+						nav.map((item) => (
+							<li>
+								<a href={item.href} class="block py-2 text-sm text-slate-300 transition hover:text-white md:py-0">
+									{item.label}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+		</header>
+		<main>
 			<slot />
 		</main>
+		<footer class="border-t border-white/10 py-10 text-sm text-slate-400">
+			<div class="mx-auto flex max-w-6xl flex-col gap-4 px-5 md:flex-row md:items-center md:justify-between">
+				<p>© {new Date().getFullYear()} 位元創意有限公司</p>
+				<ul class="flex flex-wrap gap-5">
+					<li><a class="hover:text-white" href="https://bitcreative.cc">位元創意</a></li>
+					<li><a class="hover:text-white" href="https://www.facebook.com/TrueSpinShop">TS-SHOP</a></li>
+				</ul>
+			</div>
+		</footer>
+		<script>
+			document.addEventListener('click', (e) => {
+				if ((e.target as Element).closest('header nav ul a')) {
+					(document.getElementById('nav-toggle') as HTMLInputElement).checked = false;
+				}
+			});
+		</script>
 	</body>
 </html>

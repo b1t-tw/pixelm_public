@@ -1,1 +1,30 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+	--font-sans: "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+	--font-brand: "Alegreya SC", "Noto Sans TC", serif;
+	--color-ink: #05060a;
+	--color-glow-cyan: #3fd8ff;
+	--color-glow-violet: #8b5cf6;
+	--color-glow-pink: #ff4fb8;
+}
+
+html {
+	scroll-behavior: smooth;
+	scroll-padding-top: 5rem;
+}
+
+.text-glow {
+	background: linear-gradient(90deg, var(--color-glow-cyan), var(--color-glow-violet), var(--color-glow-pink));
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.border-glow {
+	border: 1px solid transparent;
+	background:
+		linear-gradient(var(--color-ink), var(--color-ink)) padding-box,
+		linear-gradient(120deg, var(--color-glow-cyan), var(--color-glow-violet), var(--color-glow-pink)) border-box;
+}

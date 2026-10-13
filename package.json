@@ -1,5 +1,5 @@
 {
-  "name": "railustre_new",
+  "name": "pixelm",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -9,8 +9,6 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "preview:cf": "astro build && wrangler dev",
-    "deploy": "astro build && wrangler deploy",
     "astro": "astro"
   },
   "dependencies": {
@@ -19,6 +17,6 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "wrangler": "^4.149.0"
+    "@tailwindcss/typography": "^0.5.20"
   }
 }

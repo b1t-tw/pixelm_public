@@ -1,8 +1,224 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import releaseData from '../data/release.json';
+import { GADGETS, LEGACY } from '../data/gadgets';
+
+import hero from '../assets/photos/head.jpg';
+import aboutPhoto from '../assets/photos/about.jpg';
+import flow1 from '../assets/photos/flow.jpg';
+import flow2 from '../assets/photos/flow2.jpg';
+import flow3 from '../assets/photos/flow3.jpg';
+import flow4 from '../assets/photos/flow4.jpg';
+import bitcreativeLogo from '../assets/bitcreative.png';
+import tsshopLogo from '../assets/tsshop.png';
+
+import shotMain from '../content/manual/images/02-main.png';
+import shotEffects from '../content/manual/images/09-effects.png';
+import shotPreview from '../content/manual/images/16-preview.png';
+import shotTimeline from '../content/manual/images/11-select-edit.png';
+import shotGadget from '../content/manual/images/14-gadget.png';
+
+const features = [
+	{
+		title: '圖騰、單色、文字、圖片',
+		body: '內建閃爍、彩虹、流星等經典效果，以及波浪、雙螺旋、棋盤、愛心、星星等可調參數效果；也能直接輸入文字或讀入圖片、螢幕截圖。',
+		image: shotEffects,
+		alt: '圖騰效果選單',
+	},
+	{
+		title: '即時旋轉預覽',
+		body: '模擬道具旋轉時看到的畫面與燈條內容，編輯中的圖樣和時間軸上的圖樣都能即時預覽，所見即所得。',
+		image: shotPreview,
+		alt: '旋轉預覽區',
+	},
+	{
+		title: '多軌時間軸，跟著音樂排',
+		body: '載入 mp3 / wav 顯示波形對拍；圖樣可拖曳、調整長度、切割、複製貼上，支援復原 / 重作與完整快捷鍵。',
+		image: shotTimeline,
+		alt: '時間軸編輯',
+	},
+	{
+		title: '一鍵上傳到道具',
+		body: '選好道具型號，透過 USB 把軌道寫入道具的 8 個槽位之一，可設定循環播放與起始時間點。',
+		image: shotGadget,
+		alt: '選擇道具型號',
+	},
+];
+
+const gallery = [flow1, flow2, flow3, flow4];
+
+/** Written by scripts/fetch-release.mjs from the newest published GitHub Release. */
+interface Release {
+	version: string | null;
+	pubDate: string | null;
+	url: string | null;
+	downloads: { os: 'windows' | 'macos'; arch: string; name: string; url: string; size: number }[];
+}
+const release = releaseData as Release;
+
+const osLabel = (os: string, arch: string) =>
+	os === 'windows'
+		? 'Windows（64 位元）'
+		: ({ aarch64: 'macOS（Apple 晶片）', x64: 'macOS（Intel）', universal: 'macOS（Apple 晶片 / Intel）' } as Record<string, string>)[arch];
+const mb = (bytes: number) => `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+const pubDate = release.pubDate && new Date(release.pubDate).toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' });
 ---
 
 <Layout>
-	<h1 class="text-3xl font-bold">Railustre</h1>
-	<p class="mt-2 text-slate-600">Astro + Tailwind CSS，部署於 Cloudflare。</p>
+	<!-- Hero -->
+	<section class="relative isolate flex min-h-[92dvh] items-center overflow-hidden pt-16">
+		<Image src={hero} alt="" class="absolute inset-0 -z-10 h-full w-full object-cover opacity-60" widths={[960, 1600, 2001]} loading="eager" />
+		<div class="absolute inset-0 -z-10 bg-gradient-to-b from-ink/30 via-transparent to-ink"></div>
+		<div class="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/85 to-transparent md:via-35%"></div>
+		<div class="mx-auto w-full max-w-6xl px-5">
+			{release.version && <span class="rounded-full border border-white/20 px-3 py-1 text-xs text-slate-300">v{release.version}</span>}
+			<h1 class="mt-6 font-brand text-5xl font-bold tracking-wide text-white md:text-7xl">
+				PixelM Creator <span class="text-glow">X</span>
+			</h1>
+			<p class="mt-5 max-w-xl text-lg leading-relaxed text-slate-300">
+				Pixel MR 系列 POV 視覺暫留旋轉道具的燈光編輯軟體。把圖騰、文字、圖片排進時間軸，搭配音樂預覽，再透過 USB 上傳到道具。
+			</p>
+			<div class="mt-8 flex flex-wrap gap-3">
+				<a href="#download" class="rounded-full bg-white px-6 py-3 font-medium text-ink transition hover:bg-slate-200">免費下載</a>
+				<a href="/manual" class="border-glow rounded-full px-6 py-3 font-medium text-white transition hover:opacity-80">使用說明</a>
+			</div>
+			<p class="mt-4 text-sm text-slate-400">Windows · macOS</p>
+		</div>
+	</section>
+
+	<!-- Main screenshot -->
+	<section class="mx-auto max-w-6xl px-5">
+		<Image src={shotMain} alt="PixelM Creator X 主畫面" class="w-full rounded-xl border border-white/10 shadow-2xl shadow-violet-900/30" widths={[800, 1400, shotMain.width]} />
+	</section>
+
+	<!-- Features -->
+	<section id="features" class="mx-auto max-w-6xl px-5 py-24">
+		<h2 class="text-3xl font-bold text-white md:text-4xl">讓光在空間中留下你設計的軌跡</h2>
+		<p class="mt-3 text-slate-400">全新改寫的第四代編輯軟體，介面更直覺、預覽更即時。</p>
+		<div class="mt-14 space-y-20">
+			{
+				features.map((f, i) => (
+					<div class="grid items-center gap-8 md:grid-cols-2 md:gap-14">
+						<div class={i % 2 ? 'md:order-2' : ''}>
+							<h3 class="text-2xl font-bold text-white">{f.title}</h3>
+							<p class="mt-3 leading-relaxed text-slate-300">{f.body}</p>
+						</div>
+						<Image src={f.image} alt={f.alt} class="w-full rounded-lg border border-white/10" widths={[600, 1000]} />
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<!-- Gallery -->
+	<section class="grid grid-cols-2 gap-1 md:grid-cols-4">
+		{gallery.map((img) => <Image src={img} alt="PixelM 表演光軌" class="aspect-square w-full object-cover" widths={[400, 800]} />)}
+	</section>
+
+	<!-- Gadgets -->
+	<section id="gadgets" class="mx-auto max-w-6xl px-5 py-24">
+		<h2 class="text-3xl font-bold text-white md:text-4xl">支援道具</h2>
+		<p class="mt-3 text-slate-400">在軟體中選擇與手上道具相同的型號，預覽與上傳的資料才會正確；清單外的道具可選「自訂」輸入頻率與燈珠數。</p>
+		<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{
+				GADGETS.map((g) => (
+					<div class="rounded-xl border border-white/10 bg-white/[0.03] p-5">
+						<p class="font-medium text-white">{g.name}</p>
+						<p class="mt-1 text-sm text-slate-400">
+							{g.leds} 顆燈珠 · {g.freq} Hz
+						</p>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<!-- Download -->
+	<section id="download" class="border-y border-white/10 bg-white/[0.02] py-24">
+		<div class="mx-auto max-w-6xl px-5">
+			<h2 class="text-3xl font-bold text-white md:text-4xl">下載</h2>
+			{
+				release.downloads.length > 0 ? (
+					<>
+						<p class="mt-3 text-slate-400">
+							PixelM Creator X v{release.version}
+							{pubDate && ` · ${pubDate} 發佈`} · 安裝後會自動檢查更新
+						</p>
+						<div class="mt-10 grid gap-4 sm:grid-cols-2">
+							{release.downloads.map((d) => (
+								<a href={d.url} class="border-glow group flex items-center justify-between rounded-xl px-6 py-5">
+									<span>
+										<span class="block font-medium text-white">{osLabel(d.os, d.arch)}</span>
+										<span class="text-sm text-slate-400">
+											{d.name} · {mb(d.size)}
+										</span>
+									</span>
+									<span class="text-2xl text-slate-300 transition group-hover:translate-y-0.5">↓</span>
+								</a>
+							))}
+						</div>
+						{release.url && <a class="mt-6 inline-block text-sm text-glow-cyan hover:underline" href={release.url}>更新內容與所有檔案</a>}
+					</>
+				) : (
+					<p class="mt-6 rounded-xl border border-white/10 px-6 py-5 text-slate-300">PixelM Creator X 即將推出，敬請期待。</p>
+				)
+			}
+
+			<div class="mt-14 grid gap-8 md:grid-cols-2">
+				<div>
+					<h3 class="text-lg font-bold text-white">Windows 驅動程式</h3>
+					<p class="mt-2 text-sm leading-relaxed text-slate-400">上傳時出現「偵測不到裝置」，請先安裝 Pixel MR 驅動程式後重新插拔道具。</p>
+					<a class="mt-3 inline-block text-sm text-glow-cyan hover:underline" href={LEGACY.driver}>Pixel-MR driver.zip（33 MB）</a>
+				</div>
+				<div>
+					<h3 class="text-lg font-bold text-white">舊版 PixelMCreator {LEGACY.version}</h3>
+					<p class="mt-2 text-sm leading-relaxed text-slate-400">
+						新版專案檔為 <code>.pmc4</code>，無法開啟舊版的 <code>.pmc</code> / <code>.pmc3</code>；需要編輯舊專案時請使用舊版軟體（僅 Windows）。
+					</p>
+					<p class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+						<a class="text-glow-cyan hover:underline" href={LEGACY.download}>下載舊版（38 MB）</a>
+						<a class="text-glow-cyan hover:underline" href={LEGACY.mirror}>備用下載點</a>
+						<a class="text-glow-cyan hover:underline" href={LEGACY.manual}>舊版使用手冊</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- About -->
+	<section id="about" class="mx-auto grid max-w-6xl items-center gap-12 px-5 py-24 md:grid-cols-[2fr_3fr]">
+		<Image src={aboutPhoto} alt="" class="aspect-square w-full rounded-xl object-cover" widths={[500, 900]} />
+		<div>
+			<h2 class="text-3xl font-bold text-white md:text-4xl">關於 PixelM</h2>
+			<div class="mt-6 space-y-4 leading-relaxed text-slate-300">
+				<p>
+					PixelM 起源於高任翔在中央大學火舞藝術研究社的經歷，以及電子相關背景研發出第一款圖像道具 ─ M Poi，其後與 TS-SHOP
+					合作歷經數年更改研發，現今已成為國內最先進且不亞於國外產品之圖像表演道具。
+				</p>
+				<p>
+					PixelM 最早由 2015 年創立的光軌創曳工作室（railustre）開發；2020 年成立「<a
+						class="text-white underline decoration-white/30 hover:decoration-white"
+						href="https://bitcreative.cc">位元創意有限公司</a
+					>」後，PixelM 系列道具與軟體由位元創意持續研發。
+				</p>
+			</div>
+			<div class="mt-8 grid grid-cols-2 gap-4">
+				<a href="https://bitcreative.cc" class="flex items-center gap-3 rounded-xl border border-white/10 p-4 transition hover:border-white/30">
+					<Image src={bitcreativeLogo} alt="" width={56} height={48} />
+					<span>
+						<span class="block text-xs text-slate-400">研發設計</span>
+						<span class="text-white">位元創意</span>
+					</span>
+				</a>
+				<a href="https://www.facebook.com/TrueSpinShop" class="flex items-center gap-3 rounded-xl border border-white/10 p-4 transition hover:border-white/30">
+					<Image src={tsshopLogo} alt="" width={40} height={48} class="rounded bg-white p-1" />
+					<span>
+						<span class="block text-xs text-slate-400">生產經銷</span>
+						<span class="text-white">TS-SHOP</span>
+					</span>
+				</a>
+			</div>
+		</div>
+	</section>
 </Layout>

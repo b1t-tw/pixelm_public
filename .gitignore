@@ -23,5 +23,5 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# wrangler
-.wrangler/
+# written by scripts/fetch-release.mjs in CI
+public/latest.json

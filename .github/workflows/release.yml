@@ -1,0 +1,19 @@
+name: Redeploy on release
+
+# A release event runs on the release tag: building there would deploy the tag's (possibly older)
+# site snapshot, and the github-pages environment only accepts deployments from main.
+# Dispatch deploy.yml on main instead; it re-reads the newest published release.
+on:
+  release:
+    types: [published, edited, deleted]
+
+permissions:
+  actions: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh workflow run deploy.yml --repo "$GITHUB_REPOSITORY" --ref main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
