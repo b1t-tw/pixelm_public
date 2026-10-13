@@ -11,7 +11,7 @@ import flow2 from '../assets/photos/flow2.jpg';
 import flow3 from '../assets/photos/flow3.jpg';
 import flow4 from '../assets/photos/flow4.jpg';
 import bitcreativeLogo from '../assets/bitcreative.png';
-import tsshopLogo from '../assets/tsshop.png';
+import tsshopLogo from '../assets/tsshop.jpg';
 
 import shotMain from '../content/manual/images/02-main.png';
 import shotEffects from '../content/manual/images/09-effects.png';
@@ -132,6 +132,23 @@ const pubDate = release.pubDate && new Date(release.pubDate).toLocaleDateString(
 				))
 			}
 		</div>
+		<a
+			href="https://www.facebook.com/TrueSpinShop"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="border-glow group mt-10 flex flex-col items-center gap-6 rounded-2xl p-6 text-center transition hover:shadow-[0_0_40px_-10px_var(--color-glow-violet)] sm:flex-row sm:p-8 sm:text-left"
+		>
+			<Image src={tsshopLogo} alt="" width={256} height={256} class="size-28 shrink-0 rounded-xl sm:size-32" />
+			<span class="flex-1">
+				<span class="block text-sm text-slate-400">道具購買 · 生產經銷</span>
+				<span class="mt-1 block text-2xl font-bold text-white md:text-3xl">TRUE SPIN SHOP</span>
+				<span class="mt-2 block text-slate-300">PixelM 系列道具由 TRUE SPIN SHOP 生產與販售，購買道具或詢問相關問題請洽粉絲專頁。</span>
+			</span>
+			<span
+				class="shrink-0 rounded-full bg-white px-6 py-3 font-medium text-ink transition group-hover:bg-glow-cyan"
+				>前往購買 →</span
+			>
+		</a>
 	</section>
 
 	<!-- Download -->
@@ -147,7 +164,7 @@ const pubDate = release.pubDate && new Date(release.pubDate).toLocaleDateString(
 						</p>
 						<div class="mt-10 grid gap-4 sm:grid-cols-2">
 							{release.downloads.map((d) => (
-								<a href={d.url} class="border-glow group flex items-center justify-between rounded-xl px-6 py-5">
+								<a href={d.url} target="_blank" rel="noopener noreferrer" class="border-glow group flex items-center justify-between rounded-xl px-6 py-5">
 									<span>
 										<span class="block font-medium text-white">{osLabel(d.os, d.arch)}</span>
 										<span class="text-sm text-slate-400">
@@ -158,7 +175,7 @@ const pubDate = release.pubDate && new Date(release.pubDate).toLocaleDateString(
 								</a>
 							))}
 						</div>
-						{release.url && <a class="mt-6 inline-block text-sm text-glow-cyan hover:underline" href={release.url}>更新內容與所有檔案</a>}
+						{release.url && <a class="mt-6 inline-block text-sm text-glow-cyan hover:underline" href={release.url} target="_blank" rel="noopener noreferrer">更新內容與所有檔案</a>}
 					</>
 				) : (
 					<p class="mt-6 rounded-xl border border-white/10 px-6 py-5 text-slate-300">PixelM Creator X 即將推出，敬請期待。</p>
@@ -169,7 +186,7 @@ const pubDate = release.pubDate && new Date(release.pubDate).toLocaleDateString(
 				<div>
 					<h3 class="text-lg font-bold text-white">Windows 驅動程式</h3>
 					<p class="mt-2 text-sm leading-relaxed text-slate-400">上傳時出現「偵測不到裝置」，請先安裝 Pixel MR 驅動程式後重新插拔道具。</p>
-					<a class="mt-3 inline-block text-sm text-glow-cyan hover:underline" href={LEGACY.driver}>Pixel-MR driver.zip（33 MB）</a>
+					<a class="mt-3 inline-block text-sm text-glow-cyan hover:underline" href={LEGACY.driver} target="_blank" rel="noopener noreferrer">Pixel-MR driver.zip（33 MB）</a>
 				</div>
 				<div>
 					<h3 class="text-lg font-bold text-white">舊版 PixelMCreator {LEGACY.version}</h3>
@@ -177,9 +194,9 @@ const pubDate = release.pubDate && new Date(release.pubDate).toLocaleDateString(
 						新版專案檔為 <code>.pmc4</code>，無法開啟舊版的 <code>.pmc</code> / <code>.pmc3</code>；需要編輯舊專案時請使用舊版軟體（僅 Windows）。
 					</p>
 					<p class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-						<a class="text-glow-cyan hover:underline" href={LEGACY.download}>下載舊版（38 MB）</a>
-						<a class="text-glow-cyan hover:underline" href={LEGACY.mirror}>備用下載點</a>
-						<a class="text-glow-cyan hover:underline" href={LEGACY.manual}>舊版使用手冊</a>
+						<a class="text-glow-cyan hover:underline" href={LEGACY.download} target="_blank" rel="noopener noreferrer">下載舊版（38 MB）</a>
+						<a class="text-glow-cyan hover:underline" href={LEGACY.mirror} target="_blank" rel="noopener noreferrer">備用下載點</a>
+						<a class="text-glow-cyan hover:underline" href={LEGACY.manual} target="_blank" rel="noopener noreferrer">舊版使用手冊</a>
 					</p>
 				</div>
 			</div>
@@ -193,29 +210,24 @@ const pubDate = release.pubDate && new Date(release.pubDate).toLocaleDateString(
 			<h2 class="text-3xl font-bold text-white md:text-4xl">關於 <span class="font-brand tracking-wide">Pixel<span class="text-glow">M</span></span></h2>
 			<div class="mt-6 space-y-4 leading-relaxed text-slate-300">
 				<p>
-					PixelM 起源於高任翔在中央大學火舞藝術研究社的經歷，以及電子相關背景研發出第一款圖像道具 ─ M Poi，其後與 TS-SHOP
+					PixelM 起源於高任翔在中央大學火舞藝術研究社的經歷，以及電子相關背景研發出第一款圖像道具 ─ M Poi，其後與 TRUE SPIN SHOP
 					合作歷經數年更改研發，現今已成為國內最先進且不亞於國外產品之圖像表演道具。
 				</p>
 				<p>
 					PixelM 最早由 2015 年創立的光軌創曳工作室（railustre）開發；2020 年成立「<a
 						class="text-white underline decoration-white/30 hover:decoration-white"
-						href="https://bitcreative.cc">位元創意有限公司</a
+						href="https://bitcreative.cc"
+						target="_blank"
+						rel="noopener noreferrer">位元創意有限公司</a
 					>」後，PixelM 系列道具與軟體由位元創意持續研發。
 				</p>
 			</div>
-			<div class="mt-8 grid grid-cols-2 gap-4">
-				<a href="https://bitcreative.cc" class="flex items-center gap-3 rounded-xl border border-white/10 p-4 transition hover:border-white/30">
+			<div class="mt-8 grid gap-4 sm:grid-cols-2">
+				<a href="https://bitcreative.cc" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 rounded-xl border border-white/10 p-4 transition hover:border-white/30">
 					<Image src={bitcreativeLogo} alt="" width={56} height={48} />
 					<span>
 						<span class="block text-xs text-slate-400">研發設計</span>
 						<span class="text-white">位元創意</span>
-					</span>
-				</a>
-				<a href="https://www.facebook.com/TrueSpinShop" class="flex items-center gap-3 rounded-xl border border-white/10 p-4 transition hover:border-white/30">
-					<Image src={tsshopLogo} alt="" width={40} height={48} class="rounded bg-white p-1" />
-					<span>
-						<span class="block text-xs text-slate-400">生產經銷</span>
-						<span class="text-white">TS-SHOP</span>
 					</span>
 				</a>
 			</div>
