@@ -90,7 +90,7 @@ const dateOf = (iso: string | null) => iso && new Date(iso).toLocaleDateString('
 				<a href="#download" class="rounded-full bg-white px-6 py-3 font-medium text-ink transition hover:bg-slate-200">免費下載</a>
 				<a href="/manual" class="border-glow rounded-full px-6 py-3 font-medium text-white transition hover:opacity-80">使用說明</a>
 			</div>
-			<p class="mt-4 text-sm text-slate-400">Windows · macOS</p>
+			<p class="mt-4 text-sm text-slate-400">Windows · macOS（即將推出）</p>
 		</div>
 	</section>
 
@@ -186,6 +186,15 @@ const dateOf = (iso: string | null) => iso && new Date(iso).toLocaleDateString('
 										<span class="text-2xl text-slate-300 transition group-hover:translate-y-0.5">↓</span>
 									</a>
 								))}
+								{!release.downloads.some((d) => d.os === 'macos') && (
+									<div aria-disabled="true" class="flex items-center justify-between rounded-xl border border-dashed border-white/15 px-6 py-5">
+										<span>
+											<span class="block font-medium text-slate-300">macOS</span>
+											<span class="text-sm text-slate-500">即將推出，敬請期待</span>
+										</span>
+										<span class="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-400">即將推出</span>
+									</div>
+								)}
 							</div>
 							<a class="mt-6 inline-block text-sm text-glow-cyan hover:underline" href={release.url} target="_blank" rel="noopener noreferrer">更新內容與所有檔案</a>
 						</div>
