@@ -5,8 +5,9 @@ https://pixelm.bitcreative.cc — PixelM Creator X 介紹、下載、使用說�
 | 路徑 | 內容 |
 |---|---|
 | `src/pages/index.astro` | 首頁：功能、支援道具、下載、關於 |
-| `src/pages/manual.astro` | 使用說明，渲染 `src/content/manual/manual.md` |
+| `src/pages/manual.astro` | 使用說明，渲染 `src/content/manual/manual.md`，接著渲染 `src/content/hardware/hardware.md` |
 | `src/content/manual/` | 由 `scripts/sync-manual.mjs` 從軟體 repo 的 `docs/` 複製，勿直接修改 |
+| `src/content/hardware/` | 道具（硬體）操作說明，取自《LED Pixel MR-道具使用說明書2023》，直接在本 repo 維護 |
 | `src/data/gadgets.ts` | 支援道具清單（對應軟體 `src/core/gadgets.ts`）與舊版 / 驅動程式連結 |
 | `src/data/release.json` | 目前版本與安裝檔連結；CI 由 `scripts/fetch-release.mjs` 覆寫，repo 內保留「尚未發佈」的預設值 |
 | `public/latest.json` | Tauri updater manifest（CI 產生，不進版控），軟體 `plugins.updater.endpoints` 指向 `https://pixelm.bitcreative.cc/latest.json` |
@@ -39,3 +40,5 @@ GitHub repo（[b1t-tw/pixelm_public](https://github.com/b1t-tw/pixelm_public)）
 ```sh
 node scripts/sync-manual.mjs [/mnt/c/prj/pixelm_creator_x/docs]
 ```
+
+複製時會在「目錄」最後補上「Pixel MR 道具操作說明」，連到 `src/content/hardware/hardware.md` 的段落（該檔標題改名時要一併改 script 裡的錨點）。
