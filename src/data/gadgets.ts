@@ -11,8 +11,8 @@ export const GADGETS = [
 /** Legacy Qt PixelMCreator 3 and the Windows driver, still hosted on railustre.tw. */
 export const LEGACY = {
 	version: '3.213110',
-	download: 'http://www.railustre.tw/assets/file/PixelMCreatorV3.213110.zip',
+	download: 'https://drive.google.com/drive/folders/1XiKvSbpl2zzdw2uHou2tTY3Gyv56ZSrY?usp=drive_link',
 	mirror: 'https://drive.google.com/drive/folders/1XiKvSbpl2zzdw2uHou2tTY3Gyv56ZSrY?usp=share_link',
 	manual: 'https://drive.google.com/file/d/1LcZkxiQHAu5bPICkn205EpJrJs2JvcPA/view?usp=drive_link',
-	driver: 'http://www.railustre.tw/assets/file/Pixel-MR%20driver.zip',
+	driver: 'https://drive.google.com/file/d/1dPU4VifIfELpaEjY0ER0RRpPTMCzqe6x/view?usp=drive_link',
 };

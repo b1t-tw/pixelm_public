@@ -169,7 +169,7 @@ const dateOf = (iso: string | null) => iso && new Date(iso).toLocaleDateString('
 							{heading && <h3 class="text-xl font-bold text-white">{heading}</h3>}
 							<p class="mt-3 text-slate-400">
 								PixelM Creator X v{release.version}
-								{release.pubDate && ` · ${dateOf(release.pubDate)} 發佈`} · 安裝後會自動檢查更新
+								{release.pubDate && ` · ${dateOf(release.pubDate)} 發佈`}
 							</p>
 							{release.prerelease && (
 								<p class="mt-3 inline-block rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-sm text-amber-300">測試版，可能不穩定</p>
@@ -217,7 +217,6 @@ const dateOf = (iso: string | null) => iso && new Date(iso).toLocaleDateString('
 					</p>
 					<p class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
 						<a class="text-glow-cyan hover:underline" href={LEGACY.download} target="_blank" rel="noopener noreferrer">下載舊版（38 MB）</a>
-						<a class="text-glow-cyan hover:underline" href={LEGACY.mirror} target="_blank" rel="noopener noreferrer">備用下載點</a>
 						<a class="text-glow-cyan hover:underline" href={LEGACY.manual} target="_blank" rel="noopener noreferrer">舊版使用手冊</a>
 					</p>
 				</div>
