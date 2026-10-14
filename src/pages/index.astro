@@ -196,7 +196,10 @@ const dateOf = (iso: string | null) => iso && new Date(iso).toLocaleDateString('
 									</div>
 								)}
 							</div>
-							<a class="mt-6 inline-block text-sm text-glow-cyan hover:underline" href={release.url} target="_blank" rel="noopener noreferrer">更新內容與所有檔案</a>
+							<p class="mt-6 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+								<a class="inline-block text-sm text-glow-cyan hover:underline" href={release.url} target="_blank" rel="noopener noreferrer">更新內容與所有檔案</a>
+								<a class="inline-block text-sm text-glow-cyan hover:underline" href="https://drive.google.com/drive/folders/1XiKvSbpl2zzdw2uHou2tTY3Gyv56ZSrY?usp=drive_link" target="_blank" rel="noopener noreferrer">備用載點（google drive）</a>
+							</p>
 						</div>
 					))
 				) : (
