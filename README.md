@@ -9,6 +9,9 @@ https://pixelm.bitcreative.cc — PixelM Creator X 介紹、下載、使用說�
 | `src/content/manual/` | 由 `scripts/sync-manual.mjs` 從軟體 repo 的 `docs/` 複製，勿直接修改 |
 | `src/content/hardware/` | 道具（硬體）操作說明，取自《LED Pixel MR-道具使用說明書2023》，直接在本 repo 維護 |
 | `src/data/gadgets.ts` | 支援道具清單（對應軟體 `src/core/gadgets.ts`）與舊版 / 驅動程式連結 |
+| `src/data/faq.ts` | 首頁「常見問題」區塊，同時輸出成 `FAQPage` JSON-LD；答案要與軟體 / 使用說明一致 |
+| `src/data/schema.ts` | 全站 JSON-LD（位元創意 `Organization`、`WebSite`）與共用 `@id`；頁面另傳 `schema` 給 `Layout` 補上自己的節點。`sameAs` 只放確認過的位元創意官方帳號 |
+| `public/robots.txt` | 指向 `@astrojs/sitemap` 產生的 `sitemap-index.xml`；站內連結一律加結尾 `/`（`trailingSlash: 'always'`） |
 | `src/data/release.json` | 目前版本與安裝檔連結；CI 由 `scripts/fetch-release.mjs` 覆寫，repo 內保留「尚未發佈」的預設值 |
 | `public/latest.json` | Tauri updater manifest（CI 產生，不進版控），軟體 `plugins.updater.endpoints` 指向 `https://pixelm.bitcreative.cc/latest.json` |
 

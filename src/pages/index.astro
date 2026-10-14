@@ -3,6 +3,8 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import releaseData from '../data/release.json';
 import { GADGETS, LEGACY } from '../data/gadgets';
+import { FAQ } from '../data/faq';
+import { absolute, ids, type SchemaNode } from '../data/schema';
 
 import hero from '../assets/photos/head.jpg';
 import aboutPhoto from '../assets/photos/about.jpg';
@@ -46,7 +48,12 @@ const features = [
 	},
 ];
 
-const gallery = [flow1, flow2, flow3, flow4];
+const gallery = [
+	{ src: flow1, alt: '表演者揮動 PixelM LED 光舞道具，畫出白色方塊圖騰光圈' },
+	{ src: flow2, alt: '表演者揮動 PixelM LED 光舞道具，畫出橘紅色火焰圖騰光圈' },
+	{ src: flow3, alt: '表演者揮動 PixelM LED 光舞道具，畫出紅藍白幾何圖騰光圈' },
+	{ src: flow4, alt: '表演者揮動 PixelM LED 光舞道具，畫出彩虹漸層圖騰光圈' },
+];
 
 /** Written by scripts/fetch-release.mjs from the published GitHub Releases. */
 interface Release {
@@ -70,9 +77,54 @@ const osLabel = (os: string, arch: string) =>
 		: ({ aarch64: 'macOS（Apple 晶片）', x64: 'macOS（Intel）', universal: 'macOS（Apple 晶片 / Intel）' } as Record<string, string>)[arch];
 const mb = (bytes: number) => `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 const dateOf = (iso: string | null) => iso && new Date(iso).toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' });
+
+const schema: SchemaNode[] = [
+	{
+		'@type': 'SoftwareApplication',
+		'@id': ids.app,
+		name: 'PixelM Creator X',
+		alternateName: ['PixelM Creator', 'PixelMCreator'],
+		description:
+			'PixelM 系列 LED 光舞道具（Pixel MR 系列 POV 視覺暫留旋轉道具）的燈光編輯軟體：圖騰、文字、圖片排進多軌時間軸，搭配音樂預覽，透過 USB 上傳到道具。',
+		url: absolute('/'),
+		applicationCategory: 'MultimediaApplication',
+		operatingSystem: primary ? [...new Set(primary.downloads.map((d) => (d.os === 'windows' ? 'Windows' : 'macOS')))].join(', ') : 'Windows',
+		inLanguage: 'zh-Hant',
+		isAccessibleForFree: true,
+		offers: { '@type': 'Offer', price: '0', priceCurrency: 'TWD' },
+		screenshot: absolute(shotMain.src),
+		author: { '@id': ids.org },
+		publisher: { '@id': ids.org },
+		...(primary && {
+			softwareVersion: primary.version,
+			downloadUrl: primary.downloads.map((d) => d.url),
+			releaseNotes: primary.url,
+		}),
+	},
+	{
+		'@type': 'Organization',
+		'@id': ids.shop,
+		name: 'TRUE SPIN SHOP',
+		description: 'PixelM 系列道具的生產與經銷商。',
+		url: 'https://www.facebook.com/TrueSpinShop',
+	},
+	{
+		'@type': 'WebPage',
+		'@id': absolute('/'),
+		url: absolute('/'),
+		isPartOf: { '@id': ids.website },
+		about: { '@id': ids.app },
+		mentions: { '@id': ids.shop },
+	},
+	{
+		'@type': 'FAQPage',
+		'@id': absolute('/#faq'),
+		mainEntity: FAQ.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+	},
+];
 ---
 
-<Layout>
+<Layout schema={schema}>
 	<!-- Hero -->
 	<section class="relative isolate flex min-h-[92dvh] items-center overflow-hidden pt-16">
 		<Image src={hero} alt="" class="absolute inset-0 -z-10 h-full w-full object-cover opacity-60" widths={[960, 1600, 2001]} loading="eager" />
@@ -84,11 +136,11 @@ const dateOf = (iso: string | null) => iso && new Date(iso).toLocaleDateString('
 				PixelM Creator <span class="text-glow">X</span>
 			</h1>
 			<p class="mt-5 max-w-xl text-lg leading-relaxed text-slate-300">
-				Pixel MR 系列 POV 視覺暫留旋轉道具的燈光編輯軟體。把圖騰、文字、圖片排進時間軸，搭配音樂預覽，再透過 USB 上傳到道具。
+				PixelM 系列 LED 光舞道具（Pixel MR 系列 POV 視覺暫留旋轉道具）的免費燈光編輯軟體。把圖騰、文字、圖片排進時間軸，搭配音樂預覽，再透過 USB 上傳到道具。
 			</p>
 			<div class="mt-8 flex flex-wrap gap-3">
 				<a href="#download" class="rounded-full bg-white px-6 py-3 font-medium text-ink transition hover:bg-slate-200">免費下載</a>
-				<a href="/manual" class="border-glow rounded-full px-6 py-3 font-medium text-white transition hover:opacity-80">使用說明</a>
+				<a href="/manual/" class="border-glow rounded-full px-6 py-3 font-medium text-white transition hover:opacity-80">使用說明</a>
 			</div>
 			<p class="mt-4 text-sm text-slate-400">Windows · macOS（即將推出）</p>
 		</div>
@@ -120,7 +172,7 @@ const dateOf = (iso: string | null) => iso && new Date(iso).toLocaleDateString('
 
 	<!-- Gallery -->
 	<section class="grid grid-cols-2 gap-1 md:grid-cols-4">
-		{gallery.map((img) => <Image src={img} alt="PixelM 表演光軌" class="aspect-square w-full object-cover" widths={[400, 800]} />)}
+		{gallery.map((img) => <Image src={img.src} alt={img.alt} class="aspect-square w-full object-cover" widths={[400, 800]} />)}
 	</section>
 
 	<!-- Gadgets -->
@@ -225,6 +277,27 @@ const dateOf = (iso: string | null) => iso && new Date(iso).toLocaleDateString('
 				</div>
 			</div>
 		</div>
+	</section>
+
+	<!-- FAQ -->
+	<section id="faq" class="mx-auto max-w-6xl px-5 py-24">
+		<h2 class="text-3xl font-bold text-white md:text-4xl">常見問題</h2>
+		<div class="mt-10 divide-y divide-white/10 border-y border-white/10">
+			{
+				FAQ.map(({ q, a }) => (
+					<details class="group py-5">
+						<summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-white">
+							<h3>{q}</h3>
+							<span class="text-slate-400 transition group-open:rotate-45">+</span>
+						</summary>
+						<p class="mt-3 leading-relaxed text-slate-300">{a}</p>
+					</details>
+				))
+			}
+		</div>
+		<p class="mt-6 text-sm text-slate-400">
+			更多操作細節請見<a class="text-glow-cyan hover:underline" href="/manual/">使用說明</a>。
+		</p>
 	</section>
 
 	<!-- About -->

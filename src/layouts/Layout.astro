@@ -1,22 +1,34 @@
 ---
+import { getImage } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
+import hero from '../assets/photos/head.jpg';
+import { absolute, siteGraph, type SchemaNode } from '../data/schema';
 
 interface Props {
 	title?: string;
 	description?: string;
+	/** Page-specific JSON-LD nodes, merged into the site-wide @graph. */
+	schema?: SchemaNode[];
 }
 
 const {
-	title = 'PixelM Creator X | Pixel MR 光舞道具燈光編輯軟體',
-	description = 'PixelM Creator X 是 Pixel MR 系列 POV 視覺暫留旋轉道具的燈光編輯軟體：圖騰、文字、圖片排進時間軸，搭配音樂預覽，透過 USB 上傳到道具。',
+	title = 'PixelM Creator X | Pixel MR LED 光舞道具燈光編輯軟體',
+	description = 'PixelM Creator X 是 PixelM 系列 LED 光舞道具（Pixel MR 系列 POV 視覺暫留旋轉道具）的免費燈光編輯軟體：圖騰、文字、圖片排進時間軸，搭配音樂預覽，透過 USB 上傳到道具。',
+	schema = [],
 } = Astro.props;
+
+const pageUrl = absolute(Astro.url.pathname);
+const ogImage = await getImage({ src: hero, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+// Escape `<` so page text can never close the <script> element.
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...siteGraph, ...schema] }).replace(/</g, '\\u003c');
 
 const nav = [
 	{ href: '/#features', label: '功能' },
 	{ href: '/#gadgets', label: '支援道具' },
 	{ href: '/#download', label: '下載' },
-	{ href: '/manual', label: '使用說明' },
+	{ href: '/manual/', label: '使用說明' },
+	{ href: '/#faq', label: '常見問題' },
 	{ href: '/#about', label: '關於' },
 ];
 ---
@@ -30,11 +42,19 @@ const nav = [
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<meta name="keywords" content="PixelM, Pixel MR, PixelM Creator, LED POI, LED光舞道具, POV, 視覺暫留, 位元創意" />
-		<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+		<link rel="canonical" href={pageUrl} />
 		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="PixelM Creator X" />
+		<meta property="og:locale" content="zh_TW" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:url" content={new URL(Astro.url.pathname, Astro.site)} />
+		<meta property="og:url" content={pageUrl} />
+		<meta property="og:image" content={absolute(ogImage.src)} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="PixelM LED 光舞道具旋轉時留下的彩色圖騰光軌" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<script is:inline type="application/ld+json" set:html={jsonLd} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
